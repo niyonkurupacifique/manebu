@@ -1,0 +1,6 @@
+select "Contact"."nationalId" as "idDocumentNumber","LifePolicy"."code" as "policyNumberEndo","LifePolicy"."installment" as "premium","Product"."name" as "product","LifePolicy"."active","LifePolicy"."paymentMethod","LifePolicy_1"."paymentMethod" as "LifePolicy_1_paymentMethod","LifePolicy_1"."channel","LifePolicy_1"."start","LifePolicy_1"."end","LifePolicy_2"."end" as "LifePolicy_2_end","Contact"."phone","Contact"."id","Contact"."name","Contact"."surname1" from (((("dbo"."LifePolicy" "LifePolicy"
+ inner join "dbo"."Contact" "Contact" on ("Contact"."id" = "LifePolicy"."holderId"))
+ inner join "dbo"."Product" "Product" on ("Product"."code" = "LifePolicy"."productCode"))
+ inner join "dbo"."LifePolicy" "LifePolicy_1" on ("LifePolicy_1"."productCode" = "Product"."code"))
+ inner join "dbo"."LifePolicy" "LifePolicy_2" on ("LifePolicy_2"."id" = "LifePolicy_1"."groupPolicyId"))
+where ((((@date_start <= "LifePolicy"."start") and ("LifePolicy"."start" <= @date_end)) and ("LifePolicy"."active" = 1) and ("Product"."name" = @product)) or ("LifePolicy"."lob" = N'LOB'))
